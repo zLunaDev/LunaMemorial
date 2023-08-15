@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: black;
+  }
+
+  #chat-container {
+    width: 300px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid white;
+    position: absolute;
+    top: 120px;
+}
+  
+  #message-list-container {
+    width: 300px;
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    position: relative;
+    top: -160px;
+    left: 0px;
+    font-size: 14px;
+}
+
+  #chat-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+
+  #username-input, #message-input {
+    width: 70%;
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+
+  #input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  #send-button {
+    background-color: #555;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-top: auto;
+  }
+
+  #message-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 20px;
+}
+
+  .message {
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div id="chat-container">
+  <div id="chat-title">Luna's Memorial</div>
+  <div id="input-container">
+    <input type="text" id="username-input" placeholder="Digite seu nome de usuário...">
+    <input type="text" id="message-input" placeholder="Digite sua mensagem...">
+  </div>
+  <button id="send-button" onclick="sendMessage()" disabled>Enviar</button>
+</div>
+<div id="message-list-container">
+    <ul id="message-list"></ul>
+  </div>
+<script>
+var usernameInput = document.getElementById("username-input");
+var messageInput = document.getElementById("message-input");
+var sendButton = document.getElementById("send-button");
+
+usernameInput.addEventListener("input", updateSendButtonState);
+messageInput.addEventListener("input", updateSendButtonState);
+
+function updateSendButtonState() {
+  if (usernameInput.value.trim() !== "" && messageInput.value.trim() !== "") {
+    sendButton.disabled = false;
+  } else {
+    sendButton.disabled = true;
+  }
+}
+
+function sendMessage() {
+  var messageText = messageInput.value.trim();
+  
+  if (messageText !== "") {
+    var messageList = document.getElementById("message-list");
+    var messageItem = document.createElement("li");
+    messageItem.className = "message";
+    messageItem.textContent = usernameInput.value + ": " + messageText;
+    messageList.appendChild(messageItem);
+    
+    messageInput.value = "";
+    alert("Mensagem enviada!");
+  }
+  updateSendButtonState();
+}
+</script>
+
+</body>
+</html>
