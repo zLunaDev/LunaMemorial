@@ -25,18 +25,18 @@
     top: 120px;
 }
   
-  #message-list-container {
-    width: 300px;
-    padding: 10px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    position: relative;
-    top: -160px;
-    left: 0px;
-    font-size: 14px;
+#message-list-container {
+  padding: 10px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  position: absolute;
+  top: 270px; /* Adicione um valor aqui para ajustar a margem superior */
+  font-size: 14px;
+  margin-top: 20px;
+  width: 500px;
 }
 
   #chat-title {
@@ -95,8 +95,8 @@
 <div id="chat-container">
   <div id="chat-title">Luna's Memorial</div>
   <div id="input-container">
-    <input type="text" id="username-input" placeholder="Digite seu nome de usuário...">
-    <input type="text" id="message-input" placeholder="Digite sua mensagem...">
+    <input type="text" id="username-input" placeholder="Digite seu nome de usuário..." maxlength="20">
+    <input type="text" id="message-input" placeholder="Digite sua mensagem..." maxlength="500">
   </div>
   <button id="send-button" onclick="sendMessage()" disabled>Enviar</button>
 </div>
@@ -112,7 +112,10 @@ usernameInput.addEventListener("input", updateSendButtonState);
 messageInput.addEventListener("input", updateSendButtonState);
 
 function updateSendButtonState() {
-  if (usernameInput.value.trim() !== "" && messageInput.value.trim() !== "") {
+  var username = usernameInput.value.trim();
+  var message = messageInput.value.trim();
+  
+  if (username !== "" && message !== "" && message.length <= 500) {
     sendButton.disabled = false;
   } else {
     sendButton.disabled = true;
@@ -122,7 +125,7 @@ function updateSendButtonState() {
 function sendMessage() {
   var messageText = messageInput.value.trim();
   
-  if (messageText !== "") {
+  if (messageText !== "" && messageText.length <= 500) {
     var messageList = document.getElementById("message-list");
     var messageItem = document.createElement("li");
     messageItem.className = "message";
@@ -130,7 +133,7 @@ function sendMessage() {
     messageList.appendChild(messageItem);
     
     messageInput.value = "";
-    alert("Mensagem enviada!");
+    alert("Obrigada Pela Mensagem!");
   }
   updateSendButtonState();
 }
