@@ -83,7 +83,10 @@
     margin-bottom: 20px;
     color: white;
     font-size: 20px;
-}
+    overflow-y: scroll;
+    max-height: 400px; /* Defina a altura máxima para a lista de mensagens */
+  }
+
 
   .message {
     margin-bottom: 5px;
@@ -122,21 +125,42 @@ function updateSendButtonState() {
   }
 }
 
+window.onload = function() {
+  if (localStorage.getItem("savedMessages")) {
+    var savedMessages = JSON.parse(localStorage.getItem("savedMessages"));
+    var messageList = document.getElementById("message-list");
+
+    savedMessages.forEach(function(savedMessage) {
+      var messageItem = document.createElement("li");
+      messageItem.className = "message";
+      messageItem.textContent = savedMessage;
+      messageList.appendChild(messageItem);
+    });
+  }
+};
+
 function sendMessage() {
   var messageText = messageInput.value.trim();
-  
+
   if (messageText !== "" && messageText.length <= 500) {
     var messageList = document.getElementById("message-list");
     var messageItem = document.createElement("li");
     messageItem.className = "message";
     messageItem.textContent = usernameInput.value + ": " + messageText;
     messageList.appendChild(messageItem);
-    
+
+    // Salvar a mensagem no localStorage
+    var savedMessages = localStorage.getItem("savedMessages")
+      ? JSON.parse(localStorage.getItem("savedMessages"))
+      : [];
+    savedMessages.push(usernameInput.value + ": " + messageText);
+    localStorage.setItem("savedMessages", JSON.stringify(savedMessages));
+
     messageInput.value = "";
-    alert("Obrigada Pela Mensagem!");
+    updateSendButtonState();
   }
-  updateSendButtonState();
 }
+
 </script>
 
 </body>
