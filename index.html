@@ -126,42 +126,53 @@ function updateSendButtonState() {
 }
 
 window.onload = function() {
-  if (localStorage.getItem("savedMessages")) {
-    var savedMessages = JSON.parse(localStorage.getItem("savedMessages"));
-    var messageList = document.getElementById("message-list");
-
-    savedMessages.forEach(function(savedMessage) {
-      var messageItem = document.createElement("li");
-      messageItem.className = "message";
-      messageItem.textContent = savedMessage;
-      messageList.appendChild(messageItem);
-    });
-  }
+  var messageList = document.getElementById("message-list");
+  
+  // Recuperar as mensagens do Firebase Realtime Database
+  firebase.database().ref("messages").on("child_added", function(snapshot) {
+    var message = snapshot.val();
+    var messageItem = document.createElement("li");
+    messageItem.className = "message";
+    messageItem.textContent = message;
+    messageList.appendChild(messageItem);
+  });
 };
 
 function sendMessage() {
   var messageText = messageInput.value.trim();
 
   if (messageText !== "" && messageText.length <= 500) {
-    var messageList = document.getElementById("message-list");
-    var messageItem = document.createElement("li");
-    messageItem.className = "message";
-    messageItem.textContent = usernameInput.value + ": " + messageText;
-    messageList.appendChild(messageItem);
+    var message = usernameInput.value + ": " + messageText;
 
-    // Salvar a mensagem no localStorage
-    var savedMessages = localStorage.getItem("savedMessages")
-      ? JSON.parse(localStorage.getItem("savedMessages"))
-      : [];
-    savedMessages.push(usernameInput.value + ": " + messageText);
-    localStorage.setItem("savedMessages", JSON.stringify(savedMessages));
+    // Salvar a mensagem no Firebase Realtime Database
+    firebase.database().ref("messages").push(message);
 
     messageInput.value = "";
     updateSendButtonState();
   }
 }
 
+
 </script>
 
 </body>
 </html>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-database.js"></script>
+<script>
+  // Configure o Firebase com as configurações do seu projeto
+  var firebaseConfig = {
+    apiKey: "AIzaSyA8Z5GCNsOCqW9W3c6hUtuFpYi3zTN_7Qc",
+    authDomain: "memorialluna-203b0.firebaseapp.com",
+    databaseURL: "https://memorialluna-203b0-default-rtdb.firebaseio.com/",
+    projectId: "memorialluna-203b0",
+    storageBucket: "memorialluna-203b0.appspot.com",
+    messagingSenderId: "468457905042",
+    appId: "1:468457905042:web:38f109b7d5f02e960d3f4b"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  var database = firebase.database();
+</script>
