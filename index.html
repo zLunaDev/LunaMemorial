@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  * {
     margin: 0;
+  }
+
+  body {
     background-color: black;
   }
 
+  section {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   #chat-container {
+    margin: auto;
     width: 300px;
     border-radius: 10px;
     padding: 10px;
     background-color: black;
     color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     border: 2px solid white;
     position: absolute;
     top: 120px;
@@ -43,6 +49,7 @@
     font-weight: bold;
     margin-bottom: 10px;
     font-size: 24px;
+    text-align: center;
   }
 
   #username-input, #message-input {
@@ -56,12 +63,19 @@
   }
 
   #input-container {
+    border: none;
     width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
+    flex-direction: column;
     border-radius: 10px;
-    padding: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .button {
+    display: flex;
+    justify-content: end;
   }
 
   #send-button {
@@ -70,8 +84,8 @@
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
-    align-self: flex-end;
     margin-top: auto;
+    margin-right: 10px;
   }
 
   #message-list {
@@ -85,27 +99,57 @@
     font-size: 20px;
     overflow-y: scroll;
     max-height: 400px; /* Defina a altura máxima para a lista de mensagens */
+    overflow: hidden;
   }
 
 
   .message {
     margin-bottom: 5px;
   }
+
+  @media (max-width: 600px) {
+    #chat-container {
+        margin: auto;
+        top: 80px
+    }
+
+    #input-container {
+        margin: 0;
+    }
+
+    #message-list-container {
+        max-width: 300px;
+        margin-top: 0;
+        padding-top: 0;
+        text-align: center;
+    }
+
+    #username-input, #message-input {
+        width: 250px;
+    }
+
+    #message-list {
+        font-size: 18px;
+    }
+  }
 </style>
 </head>
 <body>
-
-<div id="chat-container">
-  <div id="chat-title">Luna's Memorial</div>
-  <div id="input-container">
-    <input type="text" id="username-input" placeholder="Digite seu nome de usuário..." maxlength="20">
-    <input type="text" id="message-input" placeholder="Digite sua mensagem..." maxlength="500">
-  </div>
-  <button id="send-button" onclick="sendMessage()" disabled>Enviar</button>
-</div>
-<div id="message-list-container">
-    <ul id="message-list"></ul>
-  </div>
+<section>
+    <div id="chat-container">
+        <div id="chat-title">Luna's Memorial</div>
+        <div id="input-container">
+          <input type="text" id="username-input" placeholder="Digite seu nome de usuário..." maxlength="20">
+          <input type="text" id="message-input" placeholder="Digite sua mensagem..." maxlength="500">
+        </div>
+        <div class="button">
+            <button id="send-button" onclick="sendMessage()" disabled>Enviar</button>
+        </div>
+      </div>
+      <div id="message-list-container">
+          <ul id="message-list"></ul>
+        </div>
+</section>
 <script>
 var usernameInput = document.getElementById("username-input");
 var messageInput = document.getElementById("message-input");
